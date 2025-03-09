@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function multiplicacao(a, b){
+            return a * b;
+        }
+        console.log(multiplicacao(2, 3));
+
+
+
+        let array = ['aaaaa', 'bbbb', 'ccc', 'dd', 'eeeeeeeeeeee'];
+        function getBiggestString(array){
+            let biggestString = '';
+            for(let i = 0; i < array.length; i++){
+                if(array[i].length > biggestString.length){
+                    biggestString = array[i];
+                }
+            }
+            return biggestString;
+        }
+        console.log(getBiggestString(array));
+
+
+
+        let string = 'teste';
+        function convertFirstLetterToUpperCase(stringg){
+            let newString = stringg[0].toUpperCase();
+            for(let i = 1; i < stringg.length; i++){
+                newString += stringg[i];
+            }
+            return newString;
+        }        
+        console.log(convertFirstLetterToUpperCase(string));
+
+        
+
+        let array2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 4, 4];
+        function getMaxOccurs(array){
+            let maxOccurs = 0;
+            let maxElement = 0;
+            for(let i = 0; i < array.length; i++){
+                let count = 0;
+                for(let j = 0; j < array.length; j++){
+                    if(array[i] == array[j]){
+                        count++;
+                    }
+                }
+                if(count > maxOccurs){
+                    maxOccurs = count;
+                    maxElement = array[i];
+                }
+            }
+            return maxElement;
+        }
+        console.log(getMaxOccurs(array2));
+        
+
+        
+</script>
+</body>
+</html>

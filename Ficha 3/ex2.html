@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My To Do List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .header {
+        background-color: #e74c3c;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      input[type='text'] {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+      }
+      button {
+        padding: 10px;
+        background-color: #ddd;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li {
+        background-color: white;
+        margin: 5px 0;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 5px;
+      }
+      .delete {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 5px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="display: grid; place-items: center;">
+      <div id="userForm" style="text-align: center; margin: 20px;">
+        <h3>Enter your name:</h3>
+        <input type="text" id="userName" placeholder="Your name..." />
+        <button onclick="saveUserName()">Save</button>
+      </div>
+      <div style="width: 100%;" class="header">
+        <p><h2 id="title">My To Do List</h2>
+        <input type="text" id="taskInput" placeholder="Title..." />
+        <button onclick="addTask()">Add to do tingy</button></p>
+      </div>
+    </div>
+    <ul style="width: 70%" id="taskList"></ul>
+    <script>
+      function setBolacha(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        document.bolacha = `${name}=${value};expires=${d.toUTCString()};path=/`;
+      }
+
+      function getBolacha(name) {
+        const bolachas = document.bolacha.split(';');
+        for (const bolacha of bolachas) {
+          const [key, value] = bolacha.trim().split('=');
+          if (key === name) return value;
+        }
+        return null;
+      }
+
+      function saveUserName() {
+        const userName = document.getElementById('userName').value;
+        if (userName.trim() !== '') {
+          setBolacha('userName', userName, 7);
+          updateUserName(userName);
+          document.getElementById('userForm').style.display = 'none';
+        }
+      }
+
+      function updateUserName(name) {
+        const title = document.getElementById('title');
+        title.textContent = `${name}'s To Do List`;
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const userName = getBolacha('userName');
+        if (userName) {
+          updateUserName(userName);
+          document.getElementById('userForm').style.display = 'none';
+        }
+      });
+
+      function loadTasks() {
+        const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        savedTasks.forEach(task => createTaskElement(task));
+      }
+
+      function saveTasks() {
+        const tasks = Array.from(document.querySelectorAll('#taskList li'));
+        const taskTexts = tasks.map(li => li.childNodes[0].textContent);
+        localStorage.setItem('tasks', JSON.stringify(taskTexts));
+      }
+
+      function createTaskElement(taskText) {
+        const taskList = document.getElementById('taskList');
+        const li = document.createElement('li');
+        li.textContent = taskText;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'xis';
+        deleteBtn.classList.add('delete');
+        deleteBtn.onclick = function () {
+          taskList.removeChild(li);
+          saveTasks();
+        };
+
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+      }
+
+      function addTask() {
+        const taskInput = document.getElementById('taskInput');
+        if (taskInput.value.trim() === '') alert("nao mpode strar vazia a stringa");
+        createTaskElement(taskInput.value);
+        saveTasks();
+        taskInput.value = '';
+      }
+
+      window.onload = loadTasks;
+    </script>
+  </body>
+</html>
+ 
